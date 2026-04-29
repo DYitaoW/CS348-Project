@@ -1,0 +1,17 @@
+The AI tool used in this project is codex in vscode
+
+Throughout the creation of this project AI has been mostly used to generate the basic code to implement the 
+features that I have asked to be created. For example, when creating the original design and design to create
+the tables and schema I came up with the schema and designs for the tables I wanted myself then gave a prompt
+for the AI to generate the code required based on the given schema I presented it with. 
+
+After the code is generated, I would then look over what AI had created and would test the design and make changes
+If there were errors or the result what not what I wanted it to be. I earlier when creating the website part of the
+project needed to consistenly modify the website as the code generated often had errors in the dropdowns and the overall
+implementation of the buttons/UI. Things like making sure what the user typed would be cleared after hitting enter, or changing
+the code to include making sure the user must type a positive number and restricting the jersey number to a number and not allowing
+any other values and changed the filtering part filter for all the different requirements not just any player that fit any of the 
+requirements. 
+
+AI also helped with setting up the google cloud part of this project and getting this project to work on a cloud
+server and any adjustments that were needed for it to work.

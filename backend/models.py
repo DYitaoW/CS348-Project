@@ -48,7 +48,7 @@ class Player(Base):
         CheckConstraint("jersey_number >= 0", name="ck_jersey_non_negative"),
         CheckConstraint("goals >= 0", name="ck_goals_non_negative"),
         CheckConstraint("assists >= 0", name="ck_assists_non_negative"),
-        # Indexes to speed up the player search/report filters.
+        # Indexes to speed up the player search/report filters for the different teams, goal and assists
         Index("ix_players_team_id", "team_id"),
         Index("ix_players_goals", "goals"),
         Index("ix_players_assists", "assists"),

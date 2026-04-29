@@ -1,0 +1,19 @@
+runtime: python312
+
+env: standard
+
+entrypoint: gunicorn -b :$PORT wsgi:app
+
+# Attach a Cloud SQL instance (PostgreSQL) to App Engine.
+# Replace INSTANCE_CONNECTION_NAME with: PROJECT:REGION:INSTANCE
+beta_settings:
+  cloud_sql_instances: "INSTANCE_CONNECTION_NAME"
+
+env_variables:
+  # Use a Cloud SQL unix socket for Postgres.
+  # Replace USER/PASSWORD/DBNAME and INSTANCE_CONNECTION_NAME.
+  DATABASE_URL: "postgresql+psycopg://USER:PASSWORD@/DBNAME?host=/cloudsql/INSTANCE_CONNECTION_NAME"
+
+  # Optional but recommended: restrict which frontend origin can call this API.
+  # Example: https://YOUR_PROJECT.web.app
+  # FRONTEND_ORIGIN: "https://YOUR_FRONTEND_ORIGIN"

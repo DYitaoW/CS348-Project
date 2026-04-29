@@ -6,3 +6,7 @@
 - Made backend CORS configurable via FRONTEND_ORIGIN.
 - Added DEPLOY_GOOGLE_CLOUD.md with deployment steps.
 
+26) App Engine Deployment Support
+- Added backend/app.yaml for App Engine Standard (gunicorn + Cloud SQL attachment placeholders).
+- Added DEPLOY_APP_ENGINE.md with App Engine + Cloud SQL deployment steps.
+
