@@ -1,0 +1,25 @@
+Soccer Team/player tracking database
+
+Tables
+
+1) Teams
+- team_id (PK)
+- name
+- city
+- coach_name
+
+Extra Constraints
+- (name, city) must be unique
+
+2) Players
+- player_id (PK)
+- team_id (FK -> Teams.team_id)
+- name
+- position
+- jersey_number 
+- goals 
+- assists
+
+Extra Constraints
+- (team_id, jersey_number) must be unique
+  - still allows same team player names & positions

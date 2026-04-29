@@ -1,0 +1,8 @@
+25) Cloud Readiness
+- Added backend/wsgi.py for gunicorn.
+- Added gunicorn to backend/requirements.txt.
+- Added backend/Dockerfile and backend/.dockerignore for Cloud Run.
+- Added REACT_APP_API_BASE_URL support in src/App.js.
+- Made backend CORS configurable via FRONTEND_ORIGIN.
+- Added DEPLOY_GOOGLE_CLOUD.md with deployment steps.
+
