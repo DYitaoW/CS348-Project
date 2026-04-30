@@ -13,5 +13,8 @@ the code to include making sure the user must type a positive number and restric
 any other values and changed the filtering part filter for all the different requirements not just any player that fit any of the 
 requirements. 
 
-AI also helped with setting up the google cloud part of this project and getting this project to work on a cloud
-server and any adjustments that were needed for it to work.
+AI also helped with setting up the cloud part of this project and getting this project to work on a cloud
+server and any adjustments that were needed for it to work. Mostly using the railroad builtin ai that could
+detect the errors made in the code and fix the issues. However, I still had to find myself telling the ai to
+create the database and backend part of the cloud deployment myself as it struggled to figure out what was
+needed on its own. 

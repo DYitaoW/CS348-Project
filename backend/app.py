@@ -137,7 +137,6 @@ def create_app() -> Flask:
         data = request.get_json(force=True)
         try:
             def work(session):
-<<<<<<< HEAD
                 with session.begin():
                     team = session.get(Team, team_id)
                     if not team:
@@ -145,14 +144,6 @@ def create_app() -> Flask:
                     team.name = data["name"]
                     team.city = data["city"]
                     team.coach_name = data["coach_name"]
-=======
-                team = session.get(Team, team_id)
-                if not team:
-                    return jsonify({"error": "Team not found"}), 404
-                team.name = data["name"]
-                team.city = data["city"]
-                team.coach_name = data["coach_name"]
->>>>>>> 798766d810fdfd45a8b396ec0e3591c6a8971cb4
                 return jsonify({"status": "ok"})
 
             return _run_with_retries(work)
@@ -174,20 +165,12 @@ def create_app() -> Flask:
     def delete_team(team_id: int):
         try:
             def work(session):
-<<<<<<< HEAD
                 with session.begin():
                     team = session.get(Team, team_id)
                     if not team:
                         return jsonify({"error": "Team not found"}), 404
                     # Players are deleted automatically via ON DELETE CASCADE.
                     session.delete(team)
-=======
-                team = session.get(Team, team_id)
-                if not team:
-                    return jsonify({"error": "Team not found"}), 404
-                # Players are deleted automatically via ON DELETE CASCADE.
-                session.delete(team)
->>>>>>> 798766d810fdfd45a8b396ec0e3591c6a8971cb4
                 return jsonify({"status": "ok"})
 
             return _run_with_retries(work)
@@ -255,7 +238,6 @@ def create_app() -> Flask:
         data = request.get_json(force=True)
         try:
             def work(session):
-<<<<<<< HEAD
                 with session.begin():
                     player = session.get(Player, player_id)
                     if not player:
@@ -266,17 +248,6 @@ def create_app() -> Flask:
                     player.jersey_number = int(data["jersey_number"])
                     player.goals = int(data.get("goals", 0))
                     player.assists = int(data.get("assists", 0))
-=======
-                player = session.get(Player, player_id)
-                if not player:
-                    return jsonify({"error": "Player not found"}), 404
-                player.team_id = int(data["team_id"])
-                player.name = data["name"]
-                player.position = data["position"]
-                player.jersey_number = int(data["jersey_number"])
-                player.goals = int(data.get("goals", 0))
-                player.assists = int(data.get("assists", 0))
->>>>>>> 798766d810fdfd45a8b396ec0e3591c6a8971cb4
                 return jsonify({"status": "ok"})
 
             return _run_with_retries(work)
@@ -298,18 +269,11 @@ def create_app() -> Flask:
     def delete_player(player_id: int):
         try:
             def work(session):
-<<<<<<< HEAD
                 with session.begin():
                     player = session.get(Player, player_id)
                     if not player:
                         return jsonify({"error": "Player not found"}), 404
                     session.delete(player)
-=======
-                player = session.get(Player, player_id)
-                if not player:
-                    return jsonify({"error": "Player not found"}), 404
-                session.delete(player)
->>>>>>> 798766d810fdfd45a8b396ec0e3591c6a8971cb4
                 return jsonify({"status": "ok"})
 
             return _run_with_retries(work)
