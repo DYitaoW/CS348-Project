@@ -105,14 +105,17 @@ def create_app() -> Flask:
         data = request.get_json(force=True)
         try:
             def work(session):
-                team = Team(
-                    name=data["name"],
-                    city=data["city"],
-                    coach_name=data["coach_name"],
-                )
+                new_id = None
                 with session.begin():
+                    team = Team(
+                        name=data["name"],
+                        city=data["city"],
+                        coach_name=data["coach_name"],
+                    )
                     session.add(team)
-                return jsonify({"status": "ok", "team_id": team.team_id})
+                    session.flush()
+                    new_id = team.team_id
+                return jsonify({"status": "ok", "team_id": new_id})
 
             return _run_with_retries(work)
         except IntegrityError:
@@ -134,10 +137,10 @@ def create_app() -> Flask:
         data = request.get_json(force=True)
         try:
             def work(session):
-                team = session.get(Team, team_id)
-                if not team:
-                    return jsonify({"error": "Team not found"}), 404
                 with session.begin():
+                    team = session.get(Team, team_id)
+                    if not team:
+                        return jsonify({"error": "Team not found"}), 404
                     team.name = data["name"]
                     team.city = data["city"]
                     team.coach_name = data["coach_name"]
@@ -162,10 +165,10 @@ def create_app() -> Flask:
     def delete_team(team_id: int):
         try:
             def work(session):
-                team = session.get(Team, team_id)
-                if not team:
-                    return jsonify({"error": "Team not found"}), 404
                 with session.begin():
+                    team = session.get(Team, team_id)
+                    if not team:
+                        return jsonify({"error": "Team not found"}), 404
                     # Players are deleted automatically via ON DELETE CASCADE.
                     session.delete(team)
                 return jsonify({"status": "ok"})
@@ -200,17 +203,20 @@ def create_app() -> Flask:
         data = request.get_json(force=True)
         try:
             def work(session):
-                player = Player(
-                    team_id=int(data["team_id"]),
-                    name=data["name"],
-                    position=data["position"],
-                    jersey_number=int(data["jersey_number"]),
-                    goals=int(data.get("goals", 0)),
-                    assists=int(data.get("assists", 0)),
-                )
+                new_id = None
                 with session.begin():
+                    player = Player(
+                        team_id=int(data["team_id"]),
+                        name=data["name"],
+                        position=data["position"],
+                        jersey_number=int(data["jersey_number"]),
+                        goals=int(data.get("goals", 0)),
+                        assists=int(data.get("assists", 0)),
+                    )
                     session.add(player)
-                return jsonify({"status": "ok", "player_id": player.player_id})
+                    session.flush()
+                    new_id = player.player_id
+                return jsonify({"status": "ok", "player_id": new_id})
 
             return _run_with_retries(work)
         except IntegrityError:
@@ -232,10 +238,10 @@ def create_app() -> Flask:
         data = request.get_json(force=True)
         try:
             def work(session):
-                player = session.get(Player, player_id)
-                if not player:
-                    return jsonify({"error": "Player not found"}), 404
                 with session.begin():
+                    player = session.get(Player, player_id)
+                    if not player:
+                        return jsonify({"error": "Player not found"}), 404
                     player.team_id = int(data["team_id"])
                     player.name = data["name"]
                     player.position = data["position"]
@@ -263,10 +269,10 @@ def create_app() -> Flask:
     def delete_player(player_id: int):
         try:
             def work(session):
-                player = session.get(Player, player_id)
-                if not player:
-                    return jsonify({"error": "Player not found"}), 404
                 with session.begin():
+                    player = session.get(Player, player_id)
+                    if not player:
+                        return jsonify({"error": "Player not found"}), 404
                     session.delete(player)
                 return jsonify({"status": "ok"})
 
@@ -292,8 +298,9 @@ def create_app() -> Flask:
         team_data = data.get("team") or {}
         players_data = data.get("players") or []
 
-        with SessionLocal() as session:
-            try:
+        try:
+            def work(session):
+                new_team_id = None
                 with session.begin():
                     team = Team(
                         name=team_data["name"],
@@ -314,10 +321,12 @@ def create_app() -> Flask:
                                 assists=int(p.get("assists", 0)),
                             )
                         )
+                    new_team_id = team.team_id
+                return jsonify({"status": "ok", "team_id": new_team_id})
 
-                return jsonify({"status": "ok", "team_id": team.team_id})
-            except IntegrityError as exc:
-                return jsonify({"error": "Transaction failed", "detail": str(exc)}), 400
+            return _run_with_retries(work)
+        except IntegrityError as exc:
+            return jsonify({"error": "Transaction failed", "detail": str(exc)}), 400
 
     @app.get("/report/players")
     def report_players():
