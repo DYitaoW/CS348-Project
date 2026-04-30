@@ -137,10 +137,9 @@ def create_app() -> Flask:
                 team = session.get(Team, team_id)
                 if not team:
                     return jsonify({"error": "Team not found"}), 404
-                with session.begin():
-                    team.name = data["name"]
-                    team.city = data["city"]
-                    team.coach_name = data["coach_name"]
+                team.name = data["name"]
+                team.city = data["city"]
+                team.coach_name = data["coach_name"]
                 return jsonify({"status": "ok"})
 
             return _run_with_retries(work)
@@ -165,9 +164,8 @@ def create_app() -> Flask:
                 team = session.get(Team, team_id)
                 if not team:
                     return jsonify({"error": "Team not found"}), 404
-                with session.begin():
-                    # Players are deleted automatically via ON DELETE CASCADE.
-                    session.delete(team)
+                # Players are deleted automatically via ON DELETE CASCADE.
+                session.delete(team)
                 return jsonify({"status": "ok"})
 
             return _run_with_retries(work)
@@ -235,13 +233,12 @@ def create_app() -> Flask:
                 player = session.get(Player, player_id)
                 if not player:
                     return jsonify({"error": "Player not found"}), 404
-                with session.begin():
-                    player.team_id = int(data["team_id"])
-                    player.name = data["name"]
-                    player.position = data["position"]
-                    player.jersey_number = int(data["jersey_number"])
-                    player.goals = int(data.get("goals", 0))
-                    player.assists = int(data.get("assists", 0))
+                player.team_id = int(data["team_id"])
+                player.name = data["name"]
+                player.position = data["position"]
+                player.jersey_number = int(data["jersey_number"])
+                player.goals = int(data.get("goals", 0))
+                player.assists = int(data.get("assists", 0))
                 return jsonify({"status": "ok"})
 
             return _run_with_retries(work)
@@ -266,8 +263,7 @@ def create_app() -> Flask:
                 player = session.get(Player, player_id)
                 if not player:
                     return jsonify({"error": "Player not found"}), 404
-                with session.begin():
-                    session.delete(player)
+                session.delete(player)
                 return jsonify({"status": "ok"})
 
             return _run_with_retries(work)
