@@ -12,6 +12,13 @@ if not DATABASE_URL:
         "postgresql+psycopg://user:password@localhost:5432/soccerdb"
     )
 
+# Railway's Postgres template sets DATABASE_URL with the generic
+# "postgresql://" scheme, which causes SQLAlchemy to default to the
+# psycopg2 driver. Rewrite it to the explicit psycopg (v3) driver
+# scheme so SQLAlchemy uses the psycopg package in requirements.txt.
+if DATABASE_URL.startswith("postgresql://"):
+    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1)
+
 
 # Declarative base class for models
 class Base(DeclarativeBase):
